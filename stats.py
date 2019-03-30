@@ -52,11 +52,18 @@ def normalize(raw, weights):
     lowest = min(weights) * 100
     return [round((r - lowest) / (highest - lowest) * 100) for r in raw]
 
+def invert_scores(scores):
+    return [100 - s for s in scores]
+
 with open("2016_neighbourhood_profiles.csv","r") as file:
     csv = csvfy(file)
     props = {str.join(', ', row[0:2]) for row in csv}
     ages = get_data(csv, "Population, Age characteristics", "[^\(]*$")
-    print(score_hoods(ages, [4,4,4,4,5,5,5,3.5,3.5,5,5,8,8,4.5,4.5,4.5,4.5,4.5,4.5,4.5,4.5, 4,4,4,4,5,5,5,3.5,3.5,5,5,8,8,4.5,4.5,4.5,4.5,4.5,4.5,4.5,4.5]))
+    age_weights = [4,4,4,4,5,5,5,3.5,3.5,5,5,8,8,4.5,4.5,4.5,4.5,4.5,4.5,4.5,4.5, 4,4,4,4,5,5,5,3.5,3.5,5,5,8,8,4.5,4.5,4.5,4.5,4.5,4.5,4.5,4.5]
+    print(invert_scores(score_hoods(ages, age_weights)))
 
     income = get_data(csv, "Income, Income of households in 2015", '.*,000.*')
-    print([v[0] for v in income])
+    income_weights = [r for r in range(50, 29, -1)]
+    print(invert_scores(score_hoods(income, income_weights)))
+
+    #print([v[0] for v in income])

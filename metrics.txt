@@ -43,3 +43,6 @@ age     pop 	usage
 55-64	13	    20      260           16        8x2
 64+	    16	    36      576           36        4.5x8
                         1607
+
+health by income:
+https://www.hqontario.ca/Portals/0/documents/system-performance/health-equity-report-en.pdf                        
