@@ -52,10 +52,13 @@ def normalize(raw, weights):
     lowest = min(weights) * 100
     return [round((r - lowest) / (highest - lowest) * 100) for r in raw]
 
+def print_keys(data):
+    print("{}: {}".format(len(data), [d[0] for d in data]))
+
 def invert_scores(scores):
     return [100 - s for s in scores]
 
-with open("2016_neighbourhood_profiles.csv","r") as file:
+with open("2016_profiles_cleaned.csv","r") as file:
     csv = csvfy(file)
     props = {str.join(', ', row[0:2]) for row in csv}
     ages = get_data(csv, "Population, Age characteristics", "[^\(]*$")
@@ -66,4 +69,6 @@ with open("2016_neighbourhood_profiles.csv","r") as file:
     income_weights = [r for r in range(50, 29, -1)]
     print(invert_scores(score_hoods(income, income_weights)))
 
+    education = get_data(csv, 'Education, Highest certificate, diploma or degree')
+    #print_keys(education)
     #print([v[0] for v in income])
