@@ -1,0 +1,45 @@
+Neighbourhood profile:
+Language of work, Language used most often at work
+Language, Knowledge of official languages
+
+Income, Income of individuals in 2015
+Income, Low income in 2015
+
+Visible minority, Visible minority population
+
+Population, Population and dwellings - Population change since 2011
+Population, Age characteristics
+
+Education, "Highest certificatem, diploma or degree"
+
+Wellbeing Toronto:
+Neighbourhood equity score
+
+----
+50% lifestyle
+language
+income
+minority
+education
+neighbourhood
+
+25% health care
+proximity to health care
+
+15% biology
+age?
+
+10% enviro
+parks? needs repair housing?
+
+health care cost by age
+https://www.healthsystemtracker.org/chart-collection/health-expenditures-vary-across-population/#item-people-age-55-and-over-account-for-over-half-of-total-health-spending_2016
+
+age     pop 	usage
+<19	    24	    10      240           16        4x4
+19-34	22	    11      242           15        5x3
+35-44	12	    10      120           7         3.5x2
+45-54	13	    13      169           10        5x2
+55-64	13	    20      260           16        8x2
+64+	    16	    36      576           36        4.5x8
+                        1607
