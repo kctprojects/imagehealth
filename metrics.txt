@@ -46,3 +46,12 @@ age     pop 	usage
 
 health by income:
 https://www.hqontario.ca/Portals/0/documents/system-performance/health-equity-report-en.pdf                        
+
+mortality by education:
+https://www.prb.org/us-educational-attainment-mortality/
+
+none        50 + 44
+High        56 + 51
+college     58 + 52
+basc        62 + 57
+masters     62 + 60

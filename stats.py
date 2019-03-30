@@ -70,5 +70,7 @@ with open("2016_profiles_cleaned.csv","r") as file:
     print(invert_scores(score_hoods(income, income_weights)))
 
     education = get_data(csv, 'Education, Highest certificate, diploma or degree')
+    education_weights = [50+44, 56+51, 56+51, 58+52, 58+52, 58+52, 62+57, 62+60, 62+60, 62+60]
+    print(score_hoods(education, education_weights))
     #print_keys(education)
     #print([v[0] for v in income])
