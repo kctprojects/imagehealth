@@ -175,7 +175,6 @@ function refresh() {
     var iecon = document.getElementById("iecon").value;
     var irent = document.getElementById("irent").value;
     var iedu = document.getElementById("iedu").value;
-    var bnormalize = document.getElementById('normalize').checked;
 
     //health = Array.from({length: 144}, () => colormap[Math.floor(Math.random() * 40)]);
     //health = healhArray[0][iage]
@@ -194,7 +193,7 @@ function refresh() {
         health[entry[0]] =  entry[1]
     });
     */
-    health = [];
+    var health = [];
     var ageData = healthArray.age[iage];
     var incomeData = healthArray.income[iecon];
     var houseData = healthArray.housing[irent];
@@ -205,14 +204,21 @@ function refresh() {
     for (var i = 0; i < ageData.length; i++) {
         health[codes[i]] = (ageData[i] + incomeData[i] + houseData[i] + educationData[i] + raceData[i]) / 5;
     }
-    if (bnormalize) {
-        //health = normalize(health);
-        health = normalize2(health, healthArray.globalMin, healthArray.globalMax);
-    }
+
+    health = normalize2(health, healthArray.globalMin, healthArray.globalMax);
+    var healthmax = nmax(health, -1);
+    var healthmin = nmin(health, 101);
+    var healthEquity = Math.round(100.0 - (healthmax-healthmin));
+
     //console.log(iage, iecon, irent, iedu);
     redrawMap(health);
+    setEquity(healthEquity);
 }
-
+function setEquity(equity) {
+    var t = document.getElementById("equity-value");
+    document.getElementById("equity-bar").value = equity;
+    document.getElementById("equity-value").innerText = equity + "%";
+}
 function redrawMap(health) {
     //d3.select("#n097").attr("fill", "rgb(100, 149, 237)");
     //d3.select("#n027").attr("fill", "rgb(255, 0, 0)");

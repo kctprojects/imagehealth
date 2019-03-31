@@ -20,9 +20,8 @@
 </head>
 
 <body onload="init()">
-    <progress value="95" max="100"></progress>
-    <div>95%</div>
-    <div>1,300,600 : 748</div>
+    <progress id="equity-bar" value="95" max="100"></progress>
+    <div id="equity-value">95%</div>
 
     <div id="chart"></div>
 
@@ -41,11 +40,6 @@
     <div class="slider-container">
         <div class="slider-label">Education</div>
         <input type="range" min="0" max="4" value="2" class="slider" id="iedu" oninput="refresh()">
-    </div>
-    <div class="slider-container">
-        <div class="slider-label">
-            <input id="normalize" type="checkbox" name="settings" value="normalize" checked oninput="refresh()"><img src="iage.jpg" alt="Normalize">
-        </div>
     </div>
 </body>
 </html> 
