@@ -68,7 +68,7 @@ def score_hoods(data, cat_weights, offset):
 def normalize(raw, weights):
     highest = max(weights) * 100
     lowest = min(weights) * 100
-    return [round((r - lowest) / (highest - lowest) * 100) for r in raw]
+    return [round((r - lowest) / (highest - lowest) * 100, 2) for r in raw]
 
 def print_keys(data):
     print("{}: {}".format(len(data), [d[0] for d in data]))
@@ -138,4 +138,4 @@ with open("2016_profiles_cleaned.csv","r") as file:
     print(output)
 
     with open("scores.json", "w+") as out:
-        out.write(json.dumps(output, sort_keys=True, indent=4, separators=(',', ': ')))
+        out.write(json.dumps(output, separators=(',',':')))
