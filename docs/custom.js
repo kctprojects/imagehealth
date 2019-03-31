@@ -111,6 +111,17 @@ function nmin(numbers, limit) {
     }
     return ret;
 }
+
+function navg(numbers) {
+    var total = 0;
+    for (var i = 0; i < numbers.length; i++) {
+        if (!isNaN(numbers[i])) {
+            total += numbers[i];
+        }
+    }
+    return total / numbers.length;
+}
+
 function normalize(numbers) {
 
     //var max = Math.max.apply(Math, numbers);
@@ -209,7 +220,8 @@ function refresh() {
     health = normalize2(health, healthArray.globalMin, healthArray.globalMax);
     var healthmax = nmax(health, -1);
     var healthmin = nmin(health, 101);
-    var healthEquity = Math.round(100.0 - (healthmax-healthmin));
+    var res = navg(health);
+    var healthEquity = Math.round(res);
 
     //console.log(iage, iecon, irent, iedu);
     redrawMap(health);
