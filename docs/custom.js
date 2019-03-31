@@ -293,7 +293,7 @@ function init() {
                 .append("path")
                 .attr("id", function(d) {return "n"+d.properties.AREA_S_CD})
                 .attr("fill", "grey")
-                .attr("stroke", "white")
+                .attr("stroke", "black")
                 .attr("data-name", function(d) {return d.properties.AREA_NAME})
                 .attr("d", path)
                 .append("title")
