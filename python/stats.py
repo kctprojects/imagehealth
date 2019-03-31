@@ -7,6 +7,8 @@ def row_feature(row):
 
 def row_hoods(row):
     return row[5:]
+    #return row[21:22]
+    #return row[21:22]
 
 def stoi(value):
     if isinstance(value, str):
@@ -94,8 +96,9 @@ def get_race_scores(csv, offset, shifter):
 
 def get_housing_scores(csv, offset, shifter):
     housing = get_data(csv, 'Housing,Household characteristics', '.*Spending.*')
+    print(housing)
     housing_weights = [1,1.1]
-    housing_scores = invert_scores(score_hoods(housing, housing_weights, offset, shifter))
+    housing_scores = (score_hoods(housing, housing_weights, offset, shifter))
     return housing_scores
 
 def get_codes(csv):
@@ -103,8 +106,13 @@ def get_codes(csv):
     return codes[0][1]
 
 def get_names(csv):
-    codes = get_data(csv, "Neighbourhood Information,Neighbourhood Information")
-    return codes[0][1]
+    return row_hoods(csv[0])
+
+def find_code(codes, names, name):
+    for i in range(len(codes)):
+        if re.match(name, names[i]):
+            return i
+    return -1
 
 def get_score(ages, incomes, edus, races, housings):
     return [(a + i + e + r + h) / 5 for a,i,e,r,h in zip(ages, incomes, edus, races, housings)]
@@ -114,9 +122,13 @@ with open("python/2016_profiles_cleaned.csv","r") as file:
     props = {str.join(', ', row[0:2]) for row in csv}
 
     codes = get_codes(csv)
+    names = get_names(csv)
+    index = find_code(codes, names, ".*Thorn.*")
+    print("{}, {}: {}".format(index, codes[index], names[index]))
 
     output = {
         "codes": codes,
+        "neighbourhoods": names,
         "age": [],
         "income": [],
         "education": [],
@@ -128,7 +140,7 @@ with open("python/2016_profiles_cleaned.csv","r") as file:
         output["income"].append(get_income_scores(csv, -i, equalize_histo))
         output["education"].append(get_edu_scores(csv, i, equalize_histo))
         output["race"].append(get_race_scores(csv, i, equalize_histo))
-        output["housing"].append(get_housing_scores(csv, i, equalize_histo))
+        output["housing"].append(get_housing_scores(csv, -i, equalize_histo))
 
     mins = []
     maxs = []
@@ -142,7 +154,7 @@ with open("python/2016_profiles_cleaned.csv","r") as file:
                         maxs.append(max(scores))
 
     output["globalMax"] = max(maxs)
-    output["globalMin"] = min(mins) - 5
+    output["globalMin"] = min(mins)
 
     print(output)
 
