@@ -1,0 +1,23 @@
+.slider-container {
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    width: 19%;
+}
+.slider-label {
+    margin: auto;
+    text-align: center;
+}
+.slider-image {
+    margin: auto;
+}
+.slider {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+@media screen and (max-width: 600px) {
+    .slider-container {
+    width: 100%;
+    }
+}

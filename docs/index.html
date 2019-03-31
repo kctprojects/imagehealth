@@ -1,0 +1,41 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>City Health</title>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="scores.js"></script>
+<script src="custom.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="init()">
+    <progress value="95" max="100"></progress>
+    <div>95%</div>
+    <div>1,300,600 : 748</div>
+
+    <div id="chart"></div>
+
+    <div class="slider-container">
+        <div class="slider-label"><img src="iage.jpg" alt="Age"></div>
+        <input type="range" min="0" max="4" value="2" class="slider" id="iage" oninput="refresh()">
+    </div>
+    <div class="slider-container">
+        <div class="slider-label">Economy</div>
+        <input type="range" min="0" max="4" value="2" class="slider" id="iecon" oninput="refresh()">
+    </div>
+    <div class="slider-container">
+        <div class="slider-label">Rent</div>
+        <input type="range" min="0" max="4" value="2" class="slider" id="irent" oninput="refresh()">
+    </div>
+    <div class="slider-container">
+        <div class="slider-label">Education</div>
+        <input type="range" min="0" max="4" value="2" class="slider" id="iedu" oninput="refresh()">
+    </div>
+    <div class="slider-container">
+        <div class="slider-label">
+            <input id="normalize" type="checkbox" name="settings" value="normalize" checked oninput="refresh()"><img src="iage.jpg" alt="Normalize">
+        </div>
+    </div>
+</body>
+</html> 
