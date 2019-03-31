@@ -55,3 +55,11 @@ High        56 + 51
 college     58 + 52
 basc        62 + 57
 masters     62 + 60
+
+mortality by race:
+https://www.researchgate.net/figure/Life-expectancy-at-birth-average-lifetime-in-years-by-race-ethnicity-and-immigrant_fig1_259003875
+
+white 77
+asian 82
+latin 78
+black 71
