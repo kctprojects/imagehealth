@@ -103,12 +103,18 @@ with open("2016_profiles_cleaned.csv","r") as file:
     print(codes)
     #print(min(codes[0][1]))
 
+    output = {
+        "age": [],
+        "income": [],
+        "education": [],
+        "race": [],
+        "housing": []
+    }
     for i in range(1):
-        ages = get_age_scores(csv, i)
-        incomes = get_income_scores(csv, i)
-        edus = get_edu_scores(csv, i)
-        races = get_race_scores(csv, i)
-        housings = get_housing_scores(csv, i)
-        scores = get_score(ages, incomes, edus, races, housings)
-        print(scores)
-        print([[c,v] for c,v in zip(codes, scores)])
+        output["age"].append(get_age_scores(csv, i))
+        output["income"].append(get_income_scores(csv, i))
+        output["education"].append(get_edu_scores(csv, i))
+        output["race"].append(get_race_scores(csv, 0))
+        output["housing"].append(get_housing_scores(csv, i))
+
+    print(output)
