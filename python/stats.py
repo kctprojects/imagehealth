@@ -1,13 +1,14 @@
 import csv
 import re
 import json
+import math
 
 def row_feature(row):
     return row[3]
 
 def row_hoods(row):
     return row[5:]
-    #return row[21:22]
+    #return row[21:24]
     #return row[21:22]
 
 def stoi(value):
@@ -54,26 +55,26 @@ def score_hoods(data, cat_weights, offset, shifter):
     values = trans
 
     totals = [sum(row) for row in values]
-    fracs = [[(v / t * 100) for v in row] for row, t in zip(values, totals)]
+    fracs = [[(v / t) for v in row] for row, t in zip(values, totals)]
     scores = [[f * w for f,w in zip(row, weights)] for row in fracs]
+    scores = [s for s in scores]
     raw = [sum(s) for s in scores]
-    return normalize(raw, norm_weights)
+    return raw
 
-def normalize(raw, weights):
-    highest = max(weights) * 100
-    lowest = min(weights) * 100
-    return [round((r - lowest) / (highest - lowest) * 100, 2) for r in raw]
+def normalize(raw):
+    return [round(r, 2) for r in raw]
 
 def print_keys(data):
     print("{}: {}".format(len(data), [d[0] for d in data]))
 
 def invert_scores(scores):
-    return [100 - s for s in scores]
+    return [1 - s for s in scores]
 
 def get_age_scores(csv, offset, shifter):
     ages = get_data(csv, "Population,Age characteristics", "[^\\(]*$")
     age_weights = [4,4,4,4,5,5,5,3.5,3.5,5,5,8,8,4.5,4.5,4.5,4.5,4.5,4.5,4.5,4.5, 4,4,4,4,5,5,5,3.5,3.5,5,5,8,8,4.5,4.5,4.5,4.5,4.5,4.5,4.5,4.5]
-    age_scores = invert_scores(score_hoods(ages, age_weights, offset, shifter))
+    age_weights = [10 - w for w in age_weights]
+    age_scores = score_hoods(ages, age_weights, offset, shifter)
     return age_scores
 
 def get_income_scores(csv, offset, shifter):
@@ -135,12 +136,26 @@ with open("python/2016_profiles_cleaned.csv","r") as file:
         "race": [],
         "housing": []
     }
+
+    def rescale(scores, range):
+        #return scores;
+        return [(s - range[0]) / (range[1] - range[0]) * 100 for s in scores]
+    
+    def range_of(scores):
+        return (min(scores), max(scores))
+
+    ar = range_of(get_age_scores(csv, 0, equalize_histo))
+    ir = range_of(get_income_scores(csv,0, equalize_histo))
+    er = range_of(get_edu_scores(csv, 0, equalize_histo))
+    rr = range_of(get_race_scores(csv, 0, equalize_histo))
+    hr = range_of(get_housing_scores(csv, 0, equalize_histo))
+
     for i in range(NUM_SHIFT_INCREMENTS):
-        output["age"].append(get_age_scores(csv, i, equalize_histo))
-        output["income"].append(get_income_scores(csv, -i, equalize_histo))
-        output["education"].append(get_edu_scores(csv, i, equalize_histo))
-        output["race"].append(get_race_scores(csv, i, equalize_histo))
-        output["housing"].append(get_housing_scores(csv, -i, equalize_histo))
+        output["age"].append(rescale(get_age_scores(csv, i, equalize_histo), ar))
+        output["income"].append(rescale(get_income_scores(csv, -i, equalize_histo), ir))
+        output["education"].append(rescale(get_edu_scores(csv, i, equalize_histo), er))
+        output["race"].append(rescale(get_race_scores(csv, i, equalize_histo), rr))
+        output["housing"].append(rescale(get_housing_scores(csv, -i, equalize_histo), hr))
 
     mins = []
     maxs = []
