@@ -150,7 +150,7 @@ with open("2016_profiles_cleaned.csv","r") as file:
                         maxs.append(max(scores))
 
     output["globalMax"] = max(maxs)
-    output["globalMins"] = min(mins)
+    output["globalMin"] = min(mins)
     print(min(mins))
     print(max(maxs))
 
