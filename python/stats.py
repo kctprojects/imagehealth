@@ -68,17 +68,24 @@ def wrap_histo(row, offset):
 
     return result    
 
+def equalize_histo(histo, offset):
+    average = sum(histo) / len(histo)
+    shifted = [h + (average - h) * (offset / NUM_SHIFT_INCREMENTS) for h in histo]
+    new_avg = sum(shifted) / len(shifted)
+    return [h * (average / new_avg) for h in shifted]
+
 def score_hoods(data, cat_weights, offset, shifter):
-    weights = [c / sum(cat_weights) for c in cat_weights]
+    norm_weights = [c / sum(cat_weights) for c in cat_weights]
+    weights = shifter(norm_weights, offset)
     matrix = [d[1] for d in data]
     trans = transpose(matrix)
-    values = [shifter(row, offset) for row in trans]
+    values = trans
 
     totals = [sum(row) for row in values]
     fracs = [[(v / t * 100) for v in row] for row, t in zip(values, totals)]
     scores = [[f * w for f,w in zip(row, weights)] for row in fracs]
     raw = [sum(s) for s in scores]
-    return normalize(raw, weights)
+    return normalize(raw, norm_weights)
 
 def normalize(raw, weights):
     highest = max(weights) * 100
@@ -128,7 +135,7 @@ def get_codes(csv):
 def get_score(ages, incomes, edus, races, housings):
     return [(a + i + e + r + h) / 5 for a,i,e,r,h in zip(ages, incomes, edus, races, housings)]
 
-with open("2016_profiles_cleaned.csv","r") as file:
+with open("python/2016_profiles_cleaned.csv","r") as file:
     csv = csvfy(file)
     props = {str.join(', ', row[0:2]) for row in csv}
 
@@ -143,11 +150,11 @@ with open("2016_profiles_cleaned.csv","r") as file:
         "housing": []
     }
     for i in range(NUM_SHIFT_INCREMENTS):
-        output["age"].append(get_age_scores(csv, i, wrap_histo))
-        output["income"].append(get_income_scores(csv, i, shift_histo))
-        output["education"].append(get_edu_scores(csv, i, shift_histo))
-        output["race"].append(get_race_scores(csv, 0, shift_histo))
-        output["housing"].append(get_housing_scores(csv, i, shift_histo))
+        output["age"].append(get_age_scores(csv, i, equalize_histo))
+        output["income"].append(get_income_scores(csv, i, equalize_histo))
+        output["education"].append(get_edu_scores(csv, i, equalize_histo))
+        output["race"].append(get_race_scores(csv, i, equalize_histo))
+        output["housing"].append(get_housing_scores(csv, i, equalize_histo))
 
     print(output)
 
@@ -167,6 +174,6 @@ with open("2016_profiles_cleaned.csv","r") as file:
     print(min(mins))
     print(max(maxs))
 
-    with open("scores.json", "w+") as out:
+    with open("python/scores.json", "w+") as out:
         outjson = json.dumps(output, separators=(',',':'))
         out.write("healthArray = {};".format(outjson))
