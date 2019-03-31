@@ -175,6 +175,7 @@ function refresh() {
     var iecon = document.getElementById("iecon").value;
     var irent = document.getElementById("irent").value;
     var iedu = document.getElementById("iedu").value;
+    var irace = document.getElementById("irace").value;
     var bnormalize = document.getElementById('normalize').checked;
 
     //health = Array.from({length: 144}, () => colormap[Math.floor(Math.random() * 40)]);
@@ -199,7 +200,7 @@ function refresh() {
     var incomeData = healthArray.income[iecon];
     var houseData = healthArray.housing[irent];
     var educationData = healthArray.education[iedu];
-    var raceData = healthArray.race[0];
+    var raceData = healthArray.race[irace];
     var codes = healthArray.codes;
     console.log(codes);
     for (var i = 0; i < ageData.length; i++) {

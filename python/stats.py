@@ -39,40 +39,10 @@ def transpose(matrix):
     return trans
 
 NUM_SHIFT_INCREMENTS = 5
-def shift_histo(row, offset):
-    result = [0] * len(row)
-    for _ in range(NUM_SHIFT_INCREMENTS):
-        last_shift = 0
-        for i in range(len(row)):
-            current = row[i]
-            if i < len(row) - 1:
-                uplift = current / (NUM_SHIFT_INCREMENTS - 1)
-            else:
-                uplift = 0
-            result[i] = current - uplift + last_shift
-            last_shift = uplift
-
-    return result
-
-def wrap_histo(row, offset):
-    result = [0] * len(row)
-    for _ in range(NUM_SHIFT_INCREMENTS):
-        last_shift = 0
-        for i in range(len(row)):
-            current = row[i]
-            uplift = current / (NUM_SHIFT_INCREMENTS - 1)
-            result[i] = current - uplift + last_shift
-            if i == len(row) - 1:
-                result[0] = result[0] + uplift
-            last_shift = uplift
-
-    return result    
-
 def equalize_histo(histo, offset):
     average = sum(histo) / len(histo)
-    shifted = [h + (average - h) * (offset / NUM_SHIFT_INCREMENTS) for h in histo]
-    new_avg = sum(shifted) / len(shifted)
-    return [h * (average / new_avg) for h in shifted]
+    shifted = [h + (average - h) * (offset / (NUM_SHIFT_INCREMENTS - 1)) for h in histo]
+    return shifted
 
 def score_hoods(data, cat_weights, offset, shifter):
     norm_weights = [c / sum(cat_weights) for c in cat_weights]
@@ -106,8 +76,8 @@ def get_age_scores(csv, offset, shifter):
 
 def get_income_scores(csv, offset, shifter):
     income = get_data(csv, "Income,Income of households in 2015", '.*,000.*')
-    income_weights = [r for r in range(50, 29, -1)]
-    income_scores = invert_scores(score_hoods(income, income_weights, offset, shifter))
+    income_weights = [r for r in range(29, 50)]
+    income_scores = (score_hoods(income, income_weights, offset, shifter))
     return income_scores
 
 def get_edu_scores(csv, offset, shifter):
@@ -124,11 +94,15 @@ def get_race_scores(csv, offset, shifter):
 
 def get_housing_scores(csv, offset, shifter):
     housing = get_data(csv, 'Housing,Household characteristics', '.*Spending.*')
-    housing_weights = [1.2,1]
-    housing_scores = score_hoods(housing, housing_weights, offset, shifter)
+    housing_weights = [1,1.1]
+    housing_scores = invert_scores(score_hoods(housing, housing_weights, offset, shifter))
     return housing_scores
 
 def get_codes(csv):
+    codes = get_data(csv, "Neighbourhood Information,Neighbourhood Information")
+    return codes[0][1]
+
+def get_names(csv):
     codes = get_data(csv, "Neighbourhood Information,Neighbourhood Information")
     return codes[0][1]
 
@@ -151,12 +125,10 @@ with open("python/2016_profiles_cleaned.csv","r") as file:
     }
     for i in range(NUM_SHIFT_INCREMENTS):
         output["age"].append(get_age_scores(csv, i, equalize_histo))
-        output["income"].append(get_income_scores(csv, i, equalize_histo))
+        output["income"].append(get_income_scores(csv, -i, equalize_histo))
         output["education"].append(get_edu_scores(csv, i, equalize_histo))
         output["race"].append(get_race_scores(csv, i, equalize_histo))
         output["housing"].append(get_housing_scores(csv, i, equalize_histo))
-
-    print(output)
 
     mins = []
     maxs = []
@@ -170,10 +142,10 @@ with open("python/2016_profiles_cleaned.csv","r") as file:
                         maxs.append(max(scores))
 
     output["globalMax"] = max(maxs)
-    output["globalMin"] = min(mins)
-    print(min(mins))
-    print(max(maxs))
+    output["globalMin"] = min(mins) - 5
 
-    with open("python/scores.json", "w+") as out:
+    print(output)
+
+    with open("docs/scores.js", "w+") as out:
         outjson = json.dumps(output, separators=(',',':'))
         out.write("healthArray = {};".format(outjson))
