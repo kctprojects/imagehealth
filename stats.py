@@ -138,6 +138,6 @@ with open("2016_profiles_cleaned.csv","r") as file:
 
     print(output)
 
-    with open("scores.js", "w+") as out:
+    with open("scores.json", "w+") as out:
         outjson = json.dumps(output, separators=(',',':'))
         out.write("healthArray = {};".format(outjson))
