@@ -68,7 +68,7 @@ def score_hoods(data, cat_weights, offset):
 def normalize(raw, weights):
     highest = max(weights) * 100
     lowest = min(weights) * 100
-    return [((r - lowest) / (highest - lowest) * 100) for r in raw]
+    return [round((r - lowest) / (highest - lowest) * 100) for r in raw]
 
 def print_keys(data):
     print("{}: {}".format(len(data), [d[0] for d in data]))
