@@ -45,7 +45,7 @@ def shift_histo(row, offset):
     for i in range(len(row)):
         current = row[i]
         if i < len(row) - 1:
-            uplift = (current / 2) / (NUM_SHIFT_INCREMENTS - 1) * offset
+            uplift = current / (NUM_SHIFT_INCREMENTS - 1) * offset
         else:
             uplift = 0
         result.append(current - uplift + last_shift)
@@ -102,7 +102,7 @@ def get_race_scores(csv, offset):
 
 def get_housing_scores(csv, offset):
     housing = get_data(csv, 'Housing,Household characteristics', '.*Spending.*')
-    housing_weights = [1.5,1]
+    housing_weights = [1,1.5]
     housing_scores = score_hoods(housing, housing_weights, offset)
     return housing_scores
 
@@ -137,6 +137,22 @@ with open("2016_profiles_cleaned.csv","r") as file:
         output["housing"].append(get_housing_scores(csv, i))
 
     print(output)
+
+    mins = []
+    maxs = []
+    for a in output["age"]:
+        for i in output["income"]:
+            for e in output["education"]:
+                for r in output["race"]:
+                    for h in output["housing"]:
+                        scores = get_score(a, i, e, r, h)
+                        mins.append(min(scores))
+                        maxs.append(max(scores))
+
+    output["globalMax"] = max(maxs)
+    output["globalMins"] = min(mins)
+    print(min(mins))
+    print(max(maxs))
 
     with open("scores.json", "w+") as out:
         outjson = json.dumps(output, separators=(',',':'))
