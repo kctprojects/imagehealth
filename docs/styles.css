@@ -1,8 +1,8 @@
 .slider-container {
-    padding: 0;
+    padding: 2%;
     margin: 0;
     display: inline-block;
-    width: 19%;
+    width: 15%;
 }
 .slider-label {
     margin: auto;
@@ -16,6 +16,14 @@
     margin: 0;
     width: 100%;
 }
+#equity-container {
+    padding:1%;
+}
+
+#equity-value {
+    font-size: 3em;
+}
+
 @media screen and (max-width: 600px) {
     .slider-container {
     width: 100%;
