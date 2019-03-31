@@ -122,6 +122,7 @@ with open("2016_profiles_cleaned.csv","r") as file:
     #print(min(codes[0][1]))
 
     output = {
+        "codes": codes,
         "age": [],
         "income": [],
         "education": [],
