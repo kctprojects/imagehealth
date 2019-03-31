@@ -139,7 +139,7 @@ with open("python/2016_profiles_cleaned.csv","r") as file:
 
     def rescale(scores, range):
         #return scores;
-        return [(s - range[0]) / (range[1] - range[0]) * 100 for s in scores]
+        return [round((s - range[0]) / (range[1] - range[0]) * 100, 2) for s in scores]
     
     def range_of(scores):
         return (min(scores), max(scores))
