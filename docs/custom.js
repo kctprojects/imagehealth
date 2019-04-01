@@ -212,7 +212,7 @@ function refresh() {
     var educationData = healthArray.education[iedu];
     var raceData = healthArray.race[irace];
     var codes = healthArray.codes;
-    console.log(codes);
+    //console.log(codes);
     for (var i = 0; i < ageData.length; i++) {
         health[codes[i]] = (ageData[i] + incomeData[i] + houseData[i] + educationData[i] + raceData[i]) / 5;
     }
@@ -237,10 +237,12 @@ function redrawMap(health) {
     //d3.select("#n027").attr("fill", "rgb(255, 0, 0)");
     d3.selectAll("path")  //here's how you get all the nodes
         .each(function(d) {
+            var healthv = health[parseInt(d.properties.AREA_S_CD)];
             //console.log(d.properties.AREA_S_CD, health[parseInt(d.properties.AREA_S_CD)]);
             //d3.select(this).attr("fill", colormap[Math.round(health[parseInt(d.properties.AREA_S_CD)])]);
-            d3.select(this).attr("fill", hslToRgb(health[parseInt(d.properties.AREA_S_CD)] / 100 * 0.33, 1, 0.5));
-            d3.select(this).attr("data-health", health[parseInt(d.properties.AREA_S_CD)]);
+            var path = d3.select(this);
+            path.attr("fill", hslToRgb( healthv / 100 * 0.33, 1, 0.5));
+            path.select("title").text(d.properties.AREA_NAME + ". Health: " + Math.round(healthv));
         });
     //console.log("redrawMap done");
 }
@@ -298,6 +300,11 @@ function init() {
                 .attr("d", path)
                 .append("title")
                 .text(function(d) {return d.properties.AREA_NAME});
+            document.getElementById("iage").value = 4;
+            document.getElementById("iecon").value = 2;
+            document.getElementById("irent").value = 0;
+            document.getElementById("iedu").value = 0;
+            document.getElementById("irace").value = 0;
             refresh();
             console.log("fn done");
         });
