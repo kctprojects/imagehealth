@@ -20,32 +20,38 @@
 </head>
 
 <body onload="init()">
-    <div id="equity-container">
-        <div><p>Health Equity</p></div>
-        <progress id="equity-bar" value="95" max="100"></progress>
-        <div id="equity-value">95%</div>
+    <div>
+        <div class="equity-container">
+            <H1>Health Equity</H1>
+            <a href="Imagine Health.pdf">Pitch Slides</a>
+            <a href="Participant Kit - Hacking Health in the Community.pdf">Contest Info</a>
+        </div>
+        <div class="equity-container">
+            <div id="equity-value"></div>
+            <progress id="equity-bar" value="0" max="100"></progress>
+        </div>
     </div>
 
     <div id="chart"></div>
 
     <div class="slider-container">
-        <div class="slider-label"><img src="baseline_cake_black_18dp.png" alt="Age"></div>
+        <div class="slider-label"><img src="baseline_cake_black_18dp.png" alt="Age" title="Age Equity"></div>
         <input type="range" min="0" max="4" value="0" class="slider" id="iage" oninput="refresh()">
     </div>
     <div class="slider-container">
-        <div class="slider-label"><img src="baseline_attach_money_black_18dp.png" alt="Economy"></div>
+        <div class="slider-label"><img src="baseline_attach_money_black_18dp.png" alt="Economy" title="Economy"></div>
         <input type="range" min="0" max="4" value="0" class="slider" id="iecon" oninput="refresh()">
     </div>
     <div class="slider-container">
-        <div class="slider-label"><img src="baseline_home_black_18dp.png" alt="Housing"></div>
+        <div class="slider-label"><img src="baseline_home_black_18dp.png" alt="Housing" title="Housing Equity"></div>
         <input type="range" min="0" max="4" value="0" class="slider" id="irent" oninput="refresh()">
     </div>
     <div class="slider-container">
-        <div class="slider-label"><img src="baseline_school_black_18dp.png" alt="Education"></div>
+        <div class="slider-label"><img src="baseline_school_black_18dp.png" alt="Education" title="Education Equity"></div>
         <input type="range" min="0" max="4" value="0" class="slider" id="iedu" oninput="refresh()">
     </div>
     <div class="slider-container">
-        <div class="slider-label"><img src="baseline_people_black_18dp.png" alt="Diversity"></div>
+        <div class="slider-label"><img src="baseline_people_black_18dp.png" alt="Diversity" title="Race Equity"></div>
         <input type="range" min="0" max="4" value="0" class="slider" id="irace" oninput="refresh()">
     </div>
 </body>

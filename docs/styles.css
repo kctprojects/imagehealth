@@ -1,3 +1,6 @@
+.header-inline {
+    display: inline;
+}
 .slider-container {
     padding: 2%;
     margin: 0;
@@ -16,8 +19,9 @@
     margin: 0;
     width: 100%;
 }
-#equity-container {
+.equity-container {
     padding:1%;
+    display: inline-block;
 }
 
 #equity-value {
